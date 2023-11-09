@@ -1,0 +1,127 @@
+---
+title: "Module 8 Assignment: BEAST_tutorial"
+author: "Liam McCrea"
+date: "2023-11-07"
+output: html_document
+---
+
+# Purpose
+
+Walk through the functions of BEAST2 for phylogenetic tree building.
+Learn the necessary programs and how they work, and practice interpreting results.
+
+
+# Results
+
+By interpreting the final tree, densitree, and initial QC plots, our tree building 
+procedure appears to provide a quality tree.
+
+
+## initial QC plots
+
+```{r start, echo=FALSE}
+
+knitr::include_graphics("./histogram1.pdf")
+
+knitr::include_graphics("./marginaldensity1.pdf")
+
+knitr::include_graphics("./jointmarginalheight1.pdf")
+
+knitr::include_graphics("./jointmarginal1.pdf")
+
+
+```
+
+
+## FigTrees
+
+
+```{r, echo=FALSE}
+
+knitr::include_graphics("./treefig.jpg")
+
+```
+
+
+## DensiTrees
+
+```{r, echo=FALSE}
+knitr::include_graphics("./cladefig.jpg")
+```
+
+
+# Methods
+
+## Input Data
+
+The input data is alignment data combined with metadata in the form of a nexus file.
+The data includes twelve primate mitochondrial genomes.
+
+## Programs used
+
+- BEAST2: constructs phylogenetic trees
+- BEAUti2: generates .xml configuration file for running BEAST2
+- TreeAnnotator: produces maximum clade credibility tree.
+- Tracer: summarise estimates of parameters of markov chain.
+- FigTree: produces publication quality figures.
+- DensiTree: estimates uncertainty of tree in space and creates representation figure.
+
+## Partitions and Models
+
+The data is partitioned into 4 partitions:
+1. non-coding regions
+2. 1st coding regions
+3. 2nd coding regions
+4. 3rd coding regions
+
+We direct BEAST2 to use the Gamma site mode with a linked clock model and tree, 
+and substitution model.
+
+
+## Priors
+
+We set up the birthRateY.t:tree parameter with unspecific Gamma prior - this 
+measures rate of speciation.
+
+We add a calibration node using a MRCA prior set to the human and chimp split.
+
+
+## MCMC
+
+We set the chain length to 10,000 and the Tracelog to 200. 
+Following up the first analysis we also compare to a run using 100,000 chain length
+and log every 1000.
+
+We run BEAST2 with random number seed 777.
+
+## Tracer
+
+We analyze the results in tracer. Plots are exported.
+
+## Tree Creation
+
+Using FigTree we can visualize our tree. 
+Using DensiTree we can visualize the overall distribution of trees.
+
+# References
+
+  - Bouckaert, Remco, Timothy G. Vaughan, Joëlle Barido-Sottani, Sebastián Duchêne, 
+  Mathieu Fourment, Alexandra Gavryushkina, Joseph Heled, et al. 2019. “BEAST 2.5: 
+  An Advanced Software Platform for Bayesian Evolutionary Analysis.” 
+  PLOS Computational Biology 15 (4): e1006650..
+  
+  - Joëlle Barido-Sottani, Veronika Bošková, Louis du Plessis, Denise Kühnert, 
+  Carsten Magnus, Venelin Mitov, Nicola F. Müller, Jūlija Pečerska, 
+  David A. Rasmussen, Chi Zhang, Alexei J. Drummond, Tracy A. Heath, 
+  Oliver G. Pybus, Timothy G. Vaughan, Tanja Stadler (2018). Taming the BEAST – 
+  A community teaching material resource for BEAST 2. Systematic Biology, 67(1), 
+  170–-174. doi: 10.1093/sysbio/syx060
+  
+  - Rambaut A, Drummond AJ, Xie D, Baele G and Suchard MA (2018) Posterior 
+  summarisation in Bayesian phylogenetics using Tracer 1.7. Systematic Biology. 
+  syy032. doi:10.1093/sysbio/syy032
+  
+  - Rambaut, A. (2009). FigTree: Tree figure drawing tool, version 1.4.4. 
+  Institute of Evolutionary Biology, University of Edinburgh.
+
+
